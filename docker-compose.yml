@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+    networks:
+      - server-gss-microservices
+
+  event-service:
+    container_name: event-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3000
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    networks:
+      - server-gss-microservices
+volumes:
+  postgres:
+
+networks:
+  server-gss-microservices:
+    external: true
