@@ -59,11 +59,14 @@ export class EventService {
     event: Event,
   ): Promise<Event | undefined> {
     try {
+      console.log(`Service ${event.description}`);
+
       const createdEvent = await prisma.event.create({
         data: event,
       });
       return createdEvent;
     } catch (err) {
+      console.log(err);
       return undefined;
     }
   }

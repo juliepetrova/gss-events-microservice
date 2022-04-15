@@ -27,8 +27,8 @@ const getEventById = async (req: any, res: any) => {
 };
 
 const addEvent = async (req: any, res: any) => {
-  const event = req.body;
-
+  const event: Event = req.body;
+  console.log(`COntroller ${event.description}`);
   const createdEvent: Event | undefined = await EventService.createEvent(event);
 
   return createdEvent !== undefined
