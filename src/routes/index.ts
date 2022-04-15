@@ -1,10 +1,10 @@
-import { Router } from 'express'
-import leaderboard from './leaderboard'
-import events from './events'
+import { Router } from 'express';
+import leaderboard from './leaderboard';
+import events from './events';
 
-const router = Router()
+const router = Router();
 
-router.use('/leaderboard', leaderboard)
-router.use('/events', events)
+router.use('/leaderboard', leaderboard);
+router.use('/events', events);
 
-export default router
+export default router;

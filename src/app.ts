@@ -1,33 +1,30 @@
 import express from 'express';
 import cors from 'cors';
-import { PrismaClient } from '@prisma/client'
-import routes from './routes'
+import { PrismaClient } from '@prisma/client';
+import routes from './routes';
 // import amqp from "amqplib/callback_api";
-
 
 const app = express();
 
 app.use(express.urlencoded({
-    extended: true
-  }));
+  extended: true,
+}));
 
-  app.use(express.json())
-  app.use(cors());
-  app.use('/', routes)
-  app.get('/', (req, res) => {
-    res.send('Events microservice has been started');
-  })
-
-const port = process.env.PORT !== undefined ? parseInt(process.env.PORT) : 3002;
-
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
+app.use(express.json());
+app.use(cors());
+app.use('/', routes);
+app.get('/', (req, res) => {
+  res.send('Events microservice has been started');
 });
 
-const prisma = new PrismaClient()
+const port = process.env.PORT !== undefined ? parseInt(process.env.PORT, 10) : 3002;
+
+app.listen(port, () => console.log(`Express is listening at http://localhost:${port}`));
+
+const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Events Microservice has been started!");
+  console.log('Events Microservice has been started!');
 
   // const CONN_URL = 'amqp://guest:guest@rabbitmq:5672';
   // amqp.connect(CONN_URL, function (err, conn) {
@@ -56,13 +53,12 @@ async function main() {
 
   // const allUsers = await prisma.event.findMany()
   // console.dir(allUsers, { depth: null })
-  
 }
 
 main()
   .catch((e) => {
-    console.error(e)
+    console.error(e);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });
