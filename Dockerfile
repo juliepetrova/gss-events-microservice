@@ -3,7 +3,6 @@ FROM node:16-alpine
 WORKDIR /urs/src/app
 COPY package*.json ./
 COPY prisma ./prisma/
-COPY .env ./
 COPY tsconfig.json ./
 
 
