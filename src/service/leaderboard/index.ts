@@ -1,14 +1,14 @@
-import { PrismaClient, Leaderboard } from "@prisma/client";
+import { PrismaClient, Leaderboard } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export class LeaderboardService {
   public static async deleteLeaderboard(
-    id: number
+    id: number,
   ): Promise<Leaderboard | undefined> {
     try {
-      let deletedLeaderboardRecord = await prisma.leaderboard.delete({
-        where: { id: id },
+      const deletedLeaderboardRecord = await prisma.leaderboard.delete({
+        where: { id },
       });
       return deletedLeaderboardRecord;
     } catch (err) {
@@ -18,11 +18,11 @@ export class LeaderboardService {
 
   public static async updateLeaderboard(
     id: number,
-    leaderboard: Leaderboard
+    leaderboard: Leaderboard,
   ): Promise<Leaderboard | undefined> {
     try {
-      let updatedLeaderboardRecord = await prisma.leaderboard.update({
-        where: { id: id },
+      const updatedLeaderboardRecord = await prisma.leaderboard.update({
+        where: { id },
         data: leaderboard,
       });
       return updatedLeaderboardRecord;
@@ -32,12 +32,12 @@ export class LeaderboardService {
   }
 
   public static async getLeaderboardById(
-    id: number
+    id: number,
   ): Promise<Leaderboard | undefined> {
     try {
       const leaderboardRecord = await prisma.leaderboard.findUnique({
         where: {
-          id: id,
+          id,
         },
       });
       return leaderboardRecord || undefined;
@@ -45,14 +45,14 @@ export class LeaderboardService {
       return undefined;
     }
   }
-  
+
   public static async getLeaderboardsByUserId(
-    userId: number
+    userId: number,
   ): Promise<Leaderboard[] | undefined> {
     try {
       const leaderboardRecords = await prisma.leaderboard.findMany({
         where: {
-          userId: userId,
+          userId,
         },
       });
       return leaderboardRecords || undefined;
@@ -62,7 +62,7 @@ export class LeaderboardService {
   }
 
   public static async createLeaderboard(
-    leaderboard: Leaderboard
+    leaderboard: Leaderboard,
   ): Promise<Leaderboard | undefined> {
     try {
       const createdLeaderboardRecord = await prisma.leaderboard.create({

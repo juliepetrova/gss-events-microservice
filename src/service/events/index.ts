@@ -1,14 +1,14 @@
-import { PrismaClient, Event } from "@prisma/client";
+import { PrismaClient, Event } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export class EventService {
   public static async deleteEvent(
-    id: number
+    id: number,
   ): Promise<Event | undefined> {
     try {
-      let deletedEvent = await prisma.event.delete({
-        where: { id: id },
+      const deletedEvent = await prisma.event.delete({
+        where: { id },
       });
       return deletedEvent;
     } catch (err) {
@@ -18,11 +18,11 @@ export class EventService {
 
   public static async updateEvent(
     id: number,
-    event: Event
+    event: Event,
   ): Promise<Event | undefined> {
     try {
-      let updatedEvent = await prisma.event.update({
-        where: { id: id },
+      const updatedEvent = await prisma.event.update({
+        where: { id },
         data: event,
       });
       return updatedEvent;
@@ -32,12 +32,12 @@ export class EventService {
   }
 
   public static async getEventById(
-    id: number
+    id: number,
   ): Promise<Event | undefined> {
     try {
       const event = await prisma.event.findUnique({
         where: {
-          id: id,
+          id,
         },
       });
       return event || undefined;
@@ -45,7 +45,6 @@ export class EventService {
       return undefined;
     }
   }
-
 
   public static async getAllEvents(): Promise<Event[] | undefined> {
     try {
@@ -57,14 +56,17 @@ export class EventService {
   }
 
   public static async createEvent(
-    event: Event
+    event: Event,
   ): Promise<Event | undefined> {
     try {
+      console.log(`Service ${event.description}`);
+
       const createdEvent = await prisma.event.create({
         data: event,
       });
       return createdEvent;
     } catch (err) {
+      console.log(err);
       return undefined;
     }
   }

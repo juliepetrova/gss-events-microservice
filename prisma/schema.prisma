@@ -13,7 +13,7 @@ datasource db {
 model Event {
   id Int @id @default(autoincrement())
   eventName String
-  date DateTime
+  date String
   goal String
   description String
   startingLocation String 
