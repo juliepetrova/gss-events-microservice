@@ -36,5 +36,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: juliepetrova/events-microservice
-          tag: v1.1
+          tag: latest
   
