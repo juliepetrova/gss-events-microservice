@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use('/', routes);
 app.get('/', (req, res) => {
-  res.send('Events microservice has been started');
+  res.send('Events microservice has been started, new');
 });
 
 const port = process.env.PORT !== undefined ? parseInt(process.env.PORT, 10) : 3002;
@@ -41,18 +41,18 @@ async function main() {
   //     );
   //   });
   // });
-  // await prisma.event.create({
-  //   data: {
-  //     eventName: "Running in heels",
-  //     date: new Date(2017, 2, 7),
-  //     goal:"Build strenght",
-  //     description:"4km run ",
-  //     startingLocation:"Piazza"
-  // },
-  // })
+  await prisma.event.create({
+    data: {
+      eventName: 'Running in heels',
+      date: '12-12-2020',
+      goal: 'Build strenght',
+      description: '4km run ',
+      startingLocation: 'Piazza',
+    },
+  });
 
-  // const allUsers = await prisma.event.findMany()
-  // console.dir(allUsers, { depth: null })
+  const allUsers = await prisma.event.findMany();
+  console.dir(allUsers, { depth: null });
 }
 
 main()
