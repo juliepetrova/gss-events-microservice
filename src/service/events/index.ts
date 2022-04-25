@@ -2,72 +2,74 @@ import { PrismaClient, Event } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export class EventService {
-  public static async deleteEvent(
-    id: number,
-  ): Promise<Event | undefined> {
-    try {
-      const deletedEvent = await prisma.event.delete({
-        where: { id },
-      });
-      return deletedEvent;
-    } catch (err) {
-      return undefined;
-    }
+const deleteEvent = async (id: number) => {
+  try {
+    const deletedEvent = await prisma.event.delete({
+      where: { id },
+    });
+    return deletedEvent;
+  } catch (error) {
+    throw new Error(`Error while trying to delete event: ${error}`);
   }
+};
 
-  public static async updateEvent(
-    id: number,
-    event: Event,
-  ): Promise<Event | undefined> {
-    try {
-      const updatedEvent = await prisma.event.update({
-        where: { id },
-        data: event,
-      });
-      return updatedEvent;
-    } catch (err) {
-      return undefined;
-    }
+const updateEvent = async (
+  id: number,
+  event: Event,
+) => {
+  try {
+    const updatedEvent = await prisma.event.update({
+      where: { id },
+      data: event,
+    });
+    return updatedEvent;
+  } catch (error) {
+    throw new Error(`Error while trying to update event: ${error}`);
   }
+};
 
-  public static async getEventById(
-    id: number,
-  ): Promise<Event | undefined> {
-    try {
-      const event = await prisma.event.findUnique({
-        where: {
-          id,
-        },
-      });
-      return event || undefined;
-    } catch (err) {
-      return undefined;
+const getEventById = async (id: number) => {
+  try {
+    const event = await prisma.event.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!event) {
+      throw new Error('Could not find event with the specified id');
     }
+    return event;
+  } catch (error) {
+    throw new Error(`Error while trying to get event by id: ${error}`);
   }
+};
 
-  public static async getAllEvents(): Promise<Event[] | undefined> {
-    try {
-      const events = await prisma.event.findMany();
-      return events;
-    } catch (err) {
-      return undefined;
-    }
+const getAllEvents = async () => {
+  try {
+    const events = await prisma.event.findMany();
+    return events;
+  } catch (error) {
+    throw new Error(`Error while trying to get events: ${error}`);
   }
+};
 
-  public static async createEvent(
-    event: Event,
-  ): Promise<Event | undefined> {
-    try {
-      console.log(`Service ${event.description}`);
+const createEvent = async (event: Event) => {
+  try {
+    console.log(`Service ${event.description}`);
 
-      const createdEvent = await prisma.event.create({
-        data: event,
-      });
-      return createdEvent;
-    } catch (err) {
-      console.log(err);
-      return undefined;
-    }
+    const createdEvent = await prisma.event.create({
+      data: event,
+    });
+    return createdEvent;
+  } catch (error) {
+    throw new Error(`Error while trying to create event by id: ${error}`);
   }
-}
+};
+
+export default {
+  createEvent,
+  getAllEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent,
+};

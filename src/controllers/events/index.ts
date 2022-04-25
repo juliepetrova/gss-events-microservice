@@ -1,70 +1,62 @@
 import { Event } from '@prisma/client';
-import { EventService } from '../../service/events/index';
+import { getSuccessResponse, getErrorResponse } from '../../utils/index';
+import EventService from '../../service/events/index';
 
 const getUpcommingEvents = async (req: any, res: any) => {
-  const events: Event[] | undefined = await EventService.getAllEvents();
-
-  return events !== undefined
-    ? res.json({
-      success: true,
-      method: 'Get all events',
-      payload: events,
-    })
-    : res.sendStatus(404);
+  try {
+    const events: Event[] = await EventService.getAllEvents();
+    return getSuccessResponse(res, events);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const getEventById = async (req: any, res: any) => {
-  const event: Event | undefined = await EventService.getEventById(
-    parseInt(req.params.id, 10),
-  );
-
-  return event !== undefined
-    ? res.json({
-      success: true,
-      payload: event,
-    })
-    : res.sendStatus(404);
+  try {
+    const eventId = parseInt(req.params.id, 10);
+    const event: Event = await EventService.getEventById(
+      eventId,
+    );
+    return getSuccessResponse(res, event);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const addEvent = async (req: any, res: any) => {
-  const event: Event = req.body;
-  console.log(`COntroller ${event.description}`);
-  const createdEvent: Event | undefined = await EventService.createEvent(event);
-
-  return createdEvent !== undefined
-    ? res.json({
-      success: true,
-      payload: createdEvent,
-    })
-    : res.sendStatus(404);
+  try {
+    const event: Event = req.body;
+    const createdEvent: Event = await EventService.createEvent(event);
+    return getSuccessResponse(res, createdEvent);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const deleteEvent = async (req: any, res: any) => {
-  const event: Event | undefined = await EventService.deleteEvent(
-    parseInt(req.params.id, 10),
-  );
-
-  return event !== undefined
-    ? res.json({
-      success: true,
-      payload: event,
-    })
-    : res.sendStatus(404);
+  try {
+    const eventId = parseInt(req.params.id, 10);
+    const event: Event = await EventService.deleteEvent(
+      eventId,
+    );
+    return getSuccessResponse(res, event);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const updateEvent = async (req: any, res: any) => {
-  const eventId = req.params.id;
-  const event: Event = req.body;
+  try {
+    const eventId = parseInt(req.params.id, 10);
+    const event: Event = req.body;
 
-  const updatedEvent: Event | undefined = await
-  EventService.updateEvent(parseInt(eventId, 10), event);
+    const updatedEvent: Event = await
+    EventService.updateEvent(eventId, event);
 
-  return updatedEvent !== undefined
-    ? res.json({
-      success: true,
-      payload: updatedEvent,
-    })
-    : res.sendStatus(404);
+    return getSuccessResponse(res, updatedEvent);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 export default {

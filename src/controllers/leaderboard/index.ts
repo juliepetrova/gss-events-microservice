@@ -1,72 +1,68 @@
 import { Leaderboard } from '@prisma/client';
-import { LeaderboardService } from '../../service/leaderboard/index';
+import LeaderboardService from '../../service/leaderboard/index';
+import { getSuccessResponse, getErrorResponse } from '../../utils/index';
 
 const getLeaderboardRecordsByUserId = async (req: any, res: any) => {
-  const leaderboards: Leaderboard[] | undefined = await LeaderboardService.getLeaderboardsByUserId(
-    parseInt(req.params.userId, 10),
-  );
+  try {
+    const leaderboardId = parseInt(req.params.id, 10);
 
-  return leaderboards !== undefined
-    ? res.json({
-      success: true,
-      payload: leaderboards,
-    })
-    : res.sendStatus(404);
+    const leaderboards: Leaderboard[] = await LeaderboardService.getLeaderboardsByUserId(
+      leaderboardId,
+    );
+    return getSuccessResponse(res, leaderboards);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const getLeaderboardRecordById = async (req: any, res: any) => {
-  const leaderboard: Leaderboard | undefined = await LeaderboardService.getLeaderboardById(
-    parseInt(req.params.id, 10),
-  );
+  try {
+    const leaderboardId = parseInt(req.params.id, 10);
+    const leaderboard: Leaderboard | undefined = await LeaderboardService.getLeaderboardById(
+      leaderboardId,
+    );
 
-  return leaderboard !== undefined
-    ? res.json({
-      success: true,
-      payload: leaderboard,
-    })
-    : res.sendStatus(404);
+    return getSuccessResponse(res, leaderboard);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const addLeaderboardRecord = async (req: any, res: any) => {
-  const leaderboard = req.body;
-
-  const createdLeaderboardRecord: Leaderboard | undefined = await
-  LeaderboardService.createLeaderboard(leaderboard);
-
-  return createdLeaderboardRecord !== undefined
-    ? res.json({
-      success: true,
-      payload: createdLeaderboardRecord,
-    })
-    : res.sendStatus(404);
+  try {
+    const leaderboard = req.body;
+    const createdLeaderboardRecord: Leaderboard | undefined = await
+    LeaderboardService.createLeaderboard(leaderboard);
+    return getSuccessResponse(res, createdLeaderboardRecord);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const deleteLeaderboardRecord = async (req: any, res: any) => {
-  const leaderboard: Leaderboard | undefined = await LeaderboardService.deleteLeaderboard(
-    parseInt(req.params.id, 10),
-  );
+  try {
+    const leaderboardId = parseInt(req.params.id, 10);
+    const leaderboard: Leaderboard | undefined = await LeaderboardService.deleteLeaderboard(
+      leaderboardId,
+    );
 
-  return leaderboard !== undefined
-    ? res.json({
-      success: true,
-      payload: leaderboard,
-    })
-    : res.sendStatus(404);
+    return getSuccessResponse(res, leaderboard);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 const updateLeaderboardRecord = async (req: any, res: any) => {
-  const leaderboardId = req.params.id;
-  const leaderboard: Leaderboard = req.body;
+  try {
+    const leaderboardId = parseInt(req.params.id, 10);
+    const leaderboard: Leaderboard = req.body;
+    const updatedLeaderboardRecord: Leaderboard | undefined = await
+    LeaderboardService.updateLeaderboard(leaderboardId, leaderboard);
 
-  const updatedLeaderboardRecord: Leaderboard | undefined = await
-  LeaderboardService.updateLeaderboard(parseInt(leaderboardId, 10), leaderboard);
-
-  return updatedLeaderboardRecord !== undefined
-    ? res.json({
-      success: true,
-      payload: updatedLeaderboardRecord,
-    })
-    : res.sendStatus(404);
+    return getSuccessResponse(res, updatedLeaderboardRecord);
+  } catch (error) {
+    return getErrorResponse(res, error);
+  }
 };
 
 export default {
